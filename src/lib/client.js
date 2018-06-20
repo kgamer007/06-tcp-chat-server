@@ -1,14 +1,11 @@
 'use strict';
 
-const faker = require('faker');
+const uuid = require('server');
 
 module.exports = class Client {
   constructor(socket) {
-    this.nickname = faker.internet.userName();
+    this._id = uuid();
+    this.nickname = `User no. ${this._id}`;
     this.socket = socket;
-    this.userId = function uniqueId() {
-      const id = new Date();
-      return id;
-    };
   }
 };
