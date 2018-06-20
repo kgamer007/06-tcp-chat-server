@@ -1,9 +1,9 @@
 'use strict';
 
-// const EventEmitter = require('events');
+const EventEmitter = require('events');
 const net = require('net');
 const logger = require('./logger');
-const User = require('./../model/user');
+const User = require('../model/client');
 
 
 const PORT = process.env.PORT || 3000;
@@ -81,8 +81,8 @@ event.on('@users', (data, user) => {
 server.on('connection', (socket) => {
   const user = new User(socket);
   socket.write(`Welcome to the chatroom, ${user.nickname}!\n`);
-  /* keep a record of that user in our socketPool 
-  by making a  new key value pair that looks like this: */
+  /* keep a record of that user in our socketPool by making a  
+  new key value pair that looks like this: */
   // { 'dafsaed922919101: { 
   //   _id: dafsaed922919101,
   //   nickname: User no. dafsaed922919101,

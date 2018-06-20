@@ -1,8 +1,8 @@
 'use strict';
 
-const uuid = require('server');
+const uuid = require('../lib/server');
 
-module.exports = class Client {
+module.exports = class User {
   constructor(socket) {
     this._id = uuid();
     this.nickname = `User no. ${this._id}`;
