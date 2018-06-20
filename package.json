@@ -4,7 +4,10 @@
   "description": "![cf](https://i.imgur.com/7v5ASc8.png) Lab 06: TCP Chat Server\r ======",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "eslint . && jest --coverage",
+    "testWatch": "jest --coverage --watchAll",
+    "test-nolint": "jest --coverage",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
