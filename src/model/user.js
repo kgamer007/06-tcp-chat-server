@@ -1,6 +1,6 @@
 'use strict';
 
-const uuid = require('../lib/server');
+const uuid = require('uuid/v4');
 
 module.exports = class User {
   constructor(socket) {

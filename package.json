@@ -32,5 +32,8 @@
     "eslint-plugin-react": "^7.9.1",
     "jest": "^23.1.0",
     "winston": "^3.0.0"
+  },
+  "dependencies": {
+    "uuid": "^3.2.1"
   }
 }
