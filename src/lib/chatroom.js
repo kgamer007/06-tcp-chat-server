@@ -10,23 +10,13 @@ const PORT = process.env.PORT || 3000;
 const server = net.createServer();
 const event = new EventEmitter();
 const socketPool = {};
-const clientPool = [];
+
 
 const parseData = (buffer) => {
   let text = buffer.toString().trim();
   if (!text.startsWith('@')) return null;
-  // text = text.split(' '); this makes a 
-  // new array shaped like [ '@command', 'message'] where it      splits the string 
-  // ino an array based on a passed in "seperator", in this case white space
+  text = text.split(' '); 
 
-
-  // const command = text[0];
-
-  // this is the same as above line
-  // text.slice(1) = ['message']
-  // const ['message'] = text.slice(1);
-  // text.slice(1).join(' ') = 'message'
-  // changes an array such as ['i', 'entered', 'a', 'chatroom'] to "I entered a chatroom"
   text = text.split(' ');
   const [command] = text;
   const message = text.slice(1).join(' ');
@@ -45,10 +35,11 @@ const dispatchAction = (user, buffer) => {
   console.log(entry, 'THIS IS THE ENTRY'); //eslint-disable-line
   if (entry) event.emit(entry.command, entry, user);
 };
+
 server.on('connection', (socket) => {
   const user = new User(socket);
   socket.write(`Chatroom initiated, ${user.nickname}!\n`);
-  clientPool[user._id] = user;
+  socketPool[user._id] = user;
   logger.log(logger.INFO, `New user ${user.nickname} has joined`);
 
   socket.on('data', (buffer) => {
@@ -60,7 +51,7 @@ server.on('connection', (socket) => {
 event.on('@all', (data, user) => {
   logger.log(logger.INFO, data);
   Object.keys(socketPool).forEach((userIdKey) => {
-    const targetedUser = clientPool[userIdKey];
+    const targetedUser = socketPool[userIdKey];
     targetedUser.socket.write(`<${user.nickname}>: ${data.message}`);
   });
 });
@@ -83,9 +74,9 @@ event.on('@dm', (data, user) => {
   const nickname = data.message.split(' ').shift().trim();
   const message = data.message.split(' ').splice(1).join(' ').trim();
   console.log('message: ', message); //eslint-disable-line
-  Object.keys(clientPool).forEach((userIdKey) => {
-    if (clientPool[userIdKey].nickname === nickname) {
-      const targetedUser = clientPool[userIdKey];
+  Object.keys(socketPool).forEach((userIdKey) => {
+    if (socketPool[userIdKey].nickname === nickname) {
+      const targetedUser = socketPool[userIdKey];
       targetedUser.socket.write(`${user.nickname}: ${message}\n`);
       user.socket.write(`>>${user.nickname}<<: ${message}\n`);
     }
