@@ -17,7 +17,6 @@ const parseData = (buffer) => {
   if (!text.startsWith('@')) return null;
   text = text.split(' '); 
 
-  text = text.split(' ');
   const [command] = text;
   const message = text.slice(1).join(' ');
 
